@@ -18,8 +18,8 @@ func TestSuccessfulDNParsing(t *testing.T) {
 			&RelativeDN{[]*AttributeTypeAndValue{&AttributeTypeAndValue{"DC", "net"}, }},}},
 		"OU=Sales+CN=J. Smith,DC=example,DC=net": DN{[]*RelativeDN{
 			&RelativeDN{[]*AttributeTypeAndValue{
-			  &AttributeTypeAndValue{"OU", "Sales"},
-			  &AttributeTypeAndValue{"CN", "J. Smith"},}},
+				&AttributeTypeAndValue{"OU", "Sales"},
+				&AttributeTypeAndValue{"CN", "J. Smith"},}},
 			&RelativeDN{[]*AttributeTypeAndValue{&AttributeTypeAndValue{"DC", "example"},}},
 			&RelativeDN{[]*AttributeTypeAndValue{&AttributeTypeAndValue{"DC", "net"}, }},}},
 		"1.3.6.1.4.1.1466.0=#04024869": DN{[]*RelativeDN{
@@ -44,7 +44,6 @@ func TestSuccessfulDNParsing(t *testing.T) {
 					t.Logf("#%v\n", attribs)
 				}
 			}
-			continue
 		}
 	}
 }
@@ -62,10 +61,8 @@ func TestErrorDNParsing(t *testing.T) {
 		_, err := ParseDN(test)
 		if err == nil {
 			t.Errorf("Expected %s to fail parsing but succeeded\n", test)
-			continue
 		} else if err.Error() != answer {
 			t.Errorf("Unexpected error on %s:\n%s\nvs.\n%s\n", test, answer, err.Error())
-			continue
 		}
 	}
 }

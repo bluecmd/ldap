@@ -147,8 +147,8 @@ func ParseDN(str string) (*DN, error) {
 		if len(attribute.Type) == 0 {
 			return nil, errors.New("DN ended with incomplete type, value pair")
 		}
-	  attribute.Value = buffer.String()
-	  rdn.Attributes = append(rdn.Attributes, attribute)
+		attribute.Value = buffer.String()
+		rdn.Attributes = append(rdn.Attributes, attribute)
 		dn.RDNs = append(dn.RDNs, rdn)
 	}
 	return dn, nil
