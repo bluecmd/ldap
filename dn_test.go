@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestDNParsing(t *testing.T) {
+func TestSuccessfulDNParsing(t *testing.T) {
 	testcases := map[string]DN {
 		"": DN{[]*RelativeDN{}},
 		"cn=Jim\\2C \\22Hasse Hö\\22 Hansson!,dc=dummy,dc=com": DN{[]*RelativeDN{
@@ -44,6 +44,27 @@ func TestDNParsing(t *testing.T) {
 					t.Logf("#%v\n", attribs)
 				}
 			}
+			continue
+		}
+	}
+}
+
+func TestErrorDNParsing(t *testing.T) {
+	testcases := map[string]string {
+		"*": "DN ended with incomplete type, value pair",
+		"cn=Jim\\0Test": "Failed to decode escaped character: encoding/hex: invalid byte: U+0054 'T'",
+		"cn=Jim\\0": "Got corrupted escaped character",
+		"DC=example,=net": "DN ended with incomplete type, value pair",
+		"1=#0402486": "Failed to decode BER encoding: encoding/hex: odd length hex string",
+	}
+
+	for test, answer := range testcases {
+		_, err := ParseDN(test)
+		if err == nil {
+			t.Errorf("Expected %s to fail parsing but succeeded\n", test)
+			continue
+		} else if err.Error() != answer {
+			t.Errorf("Unexpected error on %s:\n%s\nvs.\n%s\n", test, answer, err.Error())
 			continue
 		}
 	}
